@@ -25,7 +25,7 @@ public class BiereService {
         return biereRepository.findAll(); 
     }
 
-    public void deletBiereById(Integer id){
+    public void deleteBiereById(Integer id){
         biereRepository.deleteById(id);
     }
 }

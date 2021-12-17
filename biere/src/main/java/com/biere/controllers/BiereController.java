@@ -59,6 +59,6 @@ public class BiereController {
     @Operation(summary = "Delete biere from id")
     @RequestMapping(path="/biere/{id}", method = RequestMethod.DELETE)
     public void getAll(@PathVariable(value="id")Integer id){
-        biereService.deletBiereById(id);
+        biereService.deleteBiereById(id);
     }
 }
