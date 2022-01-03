@@ -3,6 +3,7 @@ package com.biere.services;
 import java.util.List;
 
 import com.biere.entities.Biere;
+import com.biere.pdf.PDF;
 import com.biere.repositories.BiereRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,11 @@ public class BiereService {
 
     public void deleteBiereById(Integer id){
         biereRepository.deleteById(id);
+    }
+
+    public String getPDFBiere(Integer id) {
+        Biere biere = getBiereById(id);
+        PDF pdf = new PDF(biere);
+        return pdf.getFilePath();
     }
 }

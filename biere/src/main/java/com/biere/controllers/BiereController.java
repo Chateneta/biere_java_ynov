@@ -61,4 +61,10 @@ public class BiereController {
     public void getAll(@PathVariable(value="id")Integer id){
         biereService.deleteBiereById(id);
     }
+
+    @Operation(summary = "Return PDF from id")
+    @RequestMapping(path="/biere/pdf/{id}", method = RequestMethod.GET)
+    public String getPDF(@PathVariable(value="id")Integer id){
+        return biereService.getPDFBiere(id);
+    }
 }
