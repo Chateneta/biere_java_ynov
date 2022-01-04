@@ -2,6 +2,7 @@ package com.biere.pdf;
 
 import com.biere.entities.Biere;
 import com.qkyrie.markdown2pdf.Markdown2PdfConverter;
+import com.qkyrie.markdown2pdf.internal.reading.Markdown2PdfReader;
 import com.qkyrie.markdown2pdf.internal.writing.SimpleFileMarkdown2PdfWriter;
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.util.Date;
 
 public class PDF {
-    String filePath;
+    private String filePath;
 
     public PDF(Biere biere) {
         createMarkdown(biere);
@@ -23,7 +24,7 @@ public class PDF {
 
     private void createMarkdown(Biere biere) {
         Date date = new Date();
-        this.filePath = "biere_" + biere.getName() +  "_" + date.getTime() + ".md";
+        this.filePath = "/public/biere_" + biere.getName() +  "_" + date.getTime() + ".pdf";
 
         // create markdown file
         File file = new File(this.filePath);
