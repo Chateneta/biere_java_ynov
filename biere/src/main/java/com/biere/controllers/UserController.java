@@ -21,30 +21,10 @@ public class UserController {
     @Autowired
     private BiereService biereService;
 
-
-    public void store(User u, User info){
-        u.setUsername(info.getUsername());
-        u.setFirstname(info.getFirstname());
-        u.setLastname(info.getLastname());
-        u.setPhone(info.getPhone());
-        userService.createOrUpdate(u);
-    }
-
     @Operation(summary = "Return user from ID")
     @RequestMapping(path="/user", method = RequestMethod.GET)
     public User get(@RequestParam(value = "id") String username){
         return userService.getUserById(username);
-    }
-
-    @Operation(summary = "Edit User")
-    @RequestMapping(path="/user", method = RequestMethod.PUT)
-    public User edit(@RequestBody User user){
-        User u = userService.getUserById(user.getUsername());
-        if(u == null){
-            u = new User();
-        }
-        store(u, user);
-        return userService.getUserById(user.getUsername());
     }
 
     @Operation(summary = "Return all user")

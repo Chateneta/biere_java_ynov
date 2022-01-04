@@ -6,10 +6,13 @@ import java.util.List;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable{
     @Id @NotNull @Column(name="username",unique=true)
     String username;
@@ -23,8 +26,11 @@ public class User implements Serializable{
     @NotNull @Column(name="phone")
     String phone;
 
+    @NotNull @Column(name="password")
+    String password;
+
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
         name = "users_bieres", 
         joinColumns = @JoinColumn(name = "user_username"), 
@@ -69,4 +75,11 @@ public class User implements Serializable{
         this.bieres.remove(s);
     }
     
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

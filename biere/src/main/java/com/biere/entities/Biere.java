@@ -5,10 +5,13 @@ import java.util.*;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "users"})
 public class Biere {
     @Id @Column @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
@@ -26,7 +29,12 @@ public class Biere {
     Float degree;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "bieres")    
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "users_bieres", 
+        joinColumns = @JoinColumn(name = "biere_id"), 
+        inverseJoinColumns = @JoinColumn(name = "user_username")
+    )
     List<User> users;
 
     public Integer getId() {
