@@ -8,6 +8,8 @@ import com.biere.services.BiereService;
 import com.biere.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,30 +23,11 @@ public class UserController {
     @Autowired
     private BiereService biereService;
 
-
-    public void store(User u, User info){
-        u.setUsername(info.getUsername());
-        u.setFirstname(info.getFirstname());
-        u.setLastname(info.getLastname());
-        u.setPhone(info.getPhone());
-        userService.createOrUpdate(u);
-    }
-
     @Operation(summary = "Return user from ID")
-    @RequestMapping(path="/user", method = RequestMethod.GET)
-    public User get(@RequestParam(value = "id") String username){
-        return userService.getUserById(username);
-    }
-
-    @Operation(summary = "Edit User")
-    @RequestMapping(path="/user", method = RequestMethod.PUT)
-    public User edit(@RequestBody User user){
-        User u = userService.getUserById(user.getUsername());
-        if(u == null){
-            u = new User();
-        }
-        store(u, user);
-        return userService.getUserById(user.getUsername());
+    @RequestMapping(path="/me", method = RequestMethod.GET)
+    public User get(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userService.getUserById(authentication.getName());
     }
 
     @Operation(summary = "Return all user")
