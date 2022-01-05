@@ -9,20 +9,20 @@ import java.io.File;
 import java.util.Date;
 
 public class PDF {
-    private String filePath;
+    private String fileName;
 
     public PDF(Biere biere) {
-        System.out.println(biere);
         createPDF(biere);
     }
 
-    public String getFilePath() {
-        return filePath;
+    public String getFileName() {
+        return fileName;
     }
 
     private void createPDF(Biere biere) {
         Date date = new Date();
-        this.filePath = "./biere/src/main/resources/public/biere_" + biere.getName() +  "_" + date.getTime() + ".pdf";
+        this.fileName = "biere_" + biere.getName() +  "_" + date.getTime();
+        String filePath = "./biere/src/main/resources/public/" + this.fileName + ".pdf";
 
         // Write markdown file
         String stringMD = "";
@@ -33,21 +33,13 @@ public class PDF {
 
         File pdf = new File(filePath);
 
-        System.out.println(pdf.getAbsolutePath());
-
         // Convert markdown to PDF
         try {
             Markdown2PdfConverter
                     .newConverter()
                     .readFrom(new SimpleStringMarkdown2PdfReader(stringMD))
-                    .writeTo(new SimpleFileMarkdown2PdfWriter(pdf));
-
-            boolean pdfExists = pdf.createNewFile();
-            if (pdfExists) {
-                System.out.println("PDF created");
-            } else {
-                System.out.println("File not found");
-            }
+                    .writeTo(new SimpleFileMarkdown2PdfWriter(pdf))
+                    .doIt();
         }
         catch (Exception e) {
             e.printStackTrace();

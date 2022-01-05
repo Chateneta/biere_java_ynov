@@ -1,6 +1,6 @@
 package com.biere.controllers;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -10,10 +10,13 @@ import com.biere.entities.User;
 import com.biere.services.BiereService;
 import com.biere.services.UserService;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
+
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class BiereController {
@@ -65,7 +68,22 @@ public class BiereController {
 
     @Operation(summary = "Return PDF from id")
     @RequestMapping(path="/biere/pdf/{id}", method = RequestMethod.GET)
-    public String getPDF(@PathVariable(value="id")Integer id) {
-        return biereService.getPDFBiere(id);
+    public void getPDF(@PathVariable(value="id")Integer id, HttpServletResponse response) throws IOException {
+        String Filename = biereService.getPDFBiere(id);
+
+        File file = new File("./biere/src/main/resources/public/" + Filename + ".pdf");
+
+        OutputStream out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(file);
+
+        IOUtils.copy(in, out);
+
+        out.close();
+        in.close();
+        boolean isDelete = file.delete();
+        if (!isDelete) {
+            throw new RuntimeException("Failed to delete file");
+        }
+
     }
 }
