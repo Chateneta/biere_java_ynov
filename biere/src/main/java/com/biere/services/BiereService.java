@@ -34,6 +34,6 @@ public class BiereService {
     public String getPDFBiere(Integer id) {
         Biere biere = getBiereById(id);
         PDF pdf = new PDF(biere);
-        return pdf.getFilePath();
+        return pdf.getFileName();
     }
 }
