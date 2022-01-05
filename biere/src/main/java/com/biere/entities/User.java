@@ -7,12 +7,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import net.minidev.json.annotate.JsonIgnore;
 
 @Entity
 @Table
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User implements Serializable{
     @Id @NotNull @Column(name="username",unique=true)
     String username;
@@ -30,7 +31,8 @@ public class User implements Serializable{
     String password;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany
+    @JsonManagedReference
     @JoinTable(
         name = "users_bieres", 
         joinColumns = @JoinColumn(name = "user_username"), 

@@ -8,6 +8,8 @@ import com.biere.services.BiereService;
 import com.biere.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,9 +24,10 @@ public class UserController {
     private BiereService biereService;
 
     @Operation(summary = "Return user from ID")
-    @RequestMapping(path="/user", method = RequestMethod.GET)
-    public User get(@RequestParam(value = "id") String username){
-        return userService.getUserById(username);
+    @RequestMapping(path="/me", method = RequestMethod.GET)
+    public User get(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userService.getUserById(authentication.getName());
     }
 
     @Operation(summary = "Return all user")
