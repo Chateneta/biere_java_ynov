@@ -30,18 +30,6 @@ public class UserController {
         return userService.getUserById(authentication.getName());
     }
 
-    @Operation(summary = "Return all user")
-    @RequestMapping(path="/user/all", method = RequestMethod.GET)
-    public List<User> getAll(){
-        return userService.getAllUser();
-    }
-
-    @Operation(summary = "Delete user from id")
-    @RequestMapping(path="/user/{id}", method = RequestMethod.DELETE)
-    public void getAll(@PathVariable(value="id")String id){
-        userService.deletUserById(id);
-    }
-
     @Operation(summary = "Add User to biere from id")
     @RequestMapping(path="/user/{uId}/{id}", method = RequestMethod.POST)
     public User subUser(@PathVariable(value="id")Integer id,@PathVariable(value="uId")String uId){
