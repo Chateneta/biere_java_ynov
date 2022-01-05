@@ -1,5 +1,6 @@
 package com.biere.controllers;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +65,7 @@ public class BiereController {
 
     @Operation(summary = "Return PDF from id")
     @RequestMapping(path="/biere/pdf/{id}", method = RequestMethod.GET)
-    public String getPDF(@PathVariable(value="id")Integer id){
+    public String getPDF(@PathVariable(value="id")Integer id) {
         return biereService.getPDFBiere(id);
     }
 }

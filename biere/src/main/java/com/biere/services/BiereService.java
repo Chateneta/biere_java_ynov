@@ -1,5 +1,6 @@
 package com.biere.services;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.biere.entities.Biere;

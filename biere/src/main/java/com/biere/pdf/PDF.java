@@ -2,64 +2,55 @@ package com.biere.pdf;
 
 import com.biere.entities.Biere;
 import com.qkyrie.markdown2pdf.Markdown2PdfConverter;
-import com.qkyrie.markdown2pdf.internal.exceptions.ConversionException;
-import com.qkyrie.markdown2pdf.internal.exceptions.Markdown2PdfLogicException;
-import com.qkyrie.markdown2pdf.internal.reading.Markdown2PdfReader;
 import com.qkyrie.markdown2pdf.internal.reading.SimpleStringMarkdown2PdfReader;
 import com.qkyrie.markdown2pdf.internal.writing.SimpleFileMarkdown2PdfWriter;
 
-import java.io.*;
+import java.io.File;
 import java.util.Date;
 
 public class PDF {
-    private String filePathMD;
-    private String filePathPDF;
+    private String filePath;
 
     public PDF(Biere biere) {
-        createMarkdown(biere);
-        generatePDFFromMarkdown();
+        System.out.println(biere);
+        createPDF(biere);
     }
 
     public String getFilePath() {
-        return filePathPDF;
+        return filePath;
     }
 
-    private void createMarkdown(Biere biere) {
+    private void createPDF(Biere biere) {
         Date date = new Date();
-        String filePath = "./biere/src/main/resources/public/biere_" + biere.getName() +  "_" + date.getTime();
-        this.filePathMD = filePath + ".md";
-        this.filePathPDF = filePath + ".pdf";
+        this.filePath = "./biere/src/main/resources/public/biere_" + biere.getName() +  "_" + date.getTime() + ".pdf";
 
-        // create markdown file
-        File file = new File(this.filePathMD);
+        // Write markdown file
+        String stringMD = "";
+        stringMD += ("# " + biere.getName() + "\n");
+        stringMD += ("## Description\n");
+        stringMD += (biere.getDesc() + "\n");
+        stringMD += ("## " + biere.getDegree() + "\n");
+
+        File pdf = new File(filePath);
+
+        System.out.println(pdf.getAbsolutePath());
+
+        // Convert markdown to PDF
         try {
-            boolean fileCreated = file.createNewFile();
-            if (fileCreated) {
-                System.out.println("File created: " + file.getName());
+            Markdown2PdfConverter
+                    .newConverter()
+                    .readFrom(new SimpleStringMarkdown2PdfReader(stringMD))
+                    .writeTo(new SimpleFileMarkdown2PdfWriter(pdf));
+
+            boolean pdfExists = pdf.createNewFile();
+            if (pdfExists) {
+                System.out.println("PDF created");
             } else {
-                System.out.println("File already exists.");
+                System.out.println("File not found");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
-
-        // write markdown file
-        try {
-            FileWriter fileWriter = new FileWriter(this.filePathMD);
-            fileWriter.write("# " + biere.getName() + "\n");
-            fileWriter.write("## Description\n");
-            fileWriter.write(biere.getDesc() + "\n");
-            fileWriter.write("## " + biere.getDegree() + "\n");
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void generatePDFFromMarkdown() {
-        Markdown2PdfConverter
-                .newConverter()
-                .readFrom(new SimpleStringMarkdown2PdfReader((new File(this.filePathMD)).toString()))
-                .writeTo(new SimpleFileMarkdown2PdfWriter(new File(this.filePathPDF)));
     }
 }
