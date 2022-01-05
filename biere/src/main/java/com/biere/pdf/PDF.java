@@ -26,7 +26,7 @@ public class PDF {
 
     private void createMarkdown(Biere biere) {
         Date date = new Date();
-        String filePath = "/public/biere_" + biere.getName() +  "_" + date.getTime();
+        String filePath = "./biere/src/main/resources/public/biere_" + biere.getName() +  "_" + date.getTime();
         this.filePathMD = filePath + ".md";
         this.filePathPDF = filePath + ".pdf";
 
