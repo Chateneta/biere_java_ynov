@@ -71,7 +71,7 @@ public class BiereController {
     public void getPDF(@PathVariable(value="id")Integer id, HttpServletResponse response) throws IOException {
         String Filename = biereService.getPDFBiere(id);
 
-        File file = new File("/biere/src/main/resources/public/" + Filename);
+        File file = new File("./biere/src/main/resources/public/" + Filename + ".pdf");
 
         OutputStream out = response.getOutputStream();
         FileInputStream in = new FileInputStream(file);
