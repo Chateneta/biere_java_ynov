@@ -1,5 +1,6 @@
 package com.biere.controllers;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -59,6 +60,12 @@ public class BiereController {
     @Operation(summary = "Delete biere from id")
     @RequestMapping(path="/biere/{id}", method = RequestMethod.DELETE)
     public void getAll(@PathVariable(value="id")Integer id){
-        biereService.deletBiereById(id);
+        biereService.deleteBiereById(id);
+    }
+
+    @Operation(summary = "Return PDF from id")
+    @RequestMapping(path="/biere/pdf/{id}", method = RequestMethod.GET)
+    public String getPDF(@PathVariable(value="id")Integer id) {
+        return biereService.getPDFBiere(id);
     }
 }
